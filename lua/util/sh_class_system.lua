@@ -63,8 +63,8 @@ end
 function baseClassDefinition:linkDerived()
 	for _, class in pairs(registry) do
 		if (not class:isLinked()) and (class:getBase() == self) then
-			class:linkBase();
-			assert(class:isLinked());
+			class:link();
+			assert(class:isLinked(), "class remained unlinked after linking to base");
 		end
 	end
 end
