@@ -5,7 +5,7 @@ function event:ctor()
 end
 
 function event:subscribe(identifier, callback)
-	assertArgument(2, "string");
+	assertArgument(2, "string", "table");
 	assertArgument(3, "function");
 	self._listeners[identifier] = callback;
 end

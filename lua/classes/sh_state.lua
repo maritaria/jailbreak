@@ -7,6 +7,9 @@ function state:ctor(name, machine)
 	self._name = name;
 	self._active = false;
 	self._machine = machine;
+	self._stateTickEvent = newInstance("Event");
+	self._stateEnteredEvent = newInstance("Event");
+	self._stateLeftEvent = newInstance("Event");
 end
 
 function state:getName()
@@ -21,28 +24,34 @@ function state:getMachine()
 	return self._machine;
 end
 
-function state:tick()
-	assert(self:isActive(), "The state is not the active state");
-	self:onTick();
+function state:getStateTickEvent()
+	return self._stateTickEvent;
 end
 
-function state:onTick() end;
+function state:getStateEnteredEvent()
+	return self._stateEnteredEvent;
+end
+
+function state:getStateLeftEvent()
+	return self._stateLeftEvent;
+end
+
+function state:tick()
+	assert(self:isActive(), "The state is not the active state");
+	self:getStateTickEvent():fire(self);
+end
 
 function state:enter()
 	assert(not self:isActive(), "The state is already active");
 	self._active = true;
-	self:onEnter();
+	self:getStateEnteredEvent():fire(self);
 end
-
-function state:onEnter() end;
 
 function state:leave()
 	assert(self:isActive(), "The state is not the active state");
 	self._active = false;
-	self:onLeave();
+	self:getStateLeftEvent():fire(self);
 end
-
-function state:onLeave() end;
 
 function state:changeTo(stateName)
 	assertArgument(2, "string");

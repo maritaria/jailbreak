@@ -5,7 +5,7 @@ settingsManager.COMMIT_ACCEPTED = 0;
 settingsManager.COMMIT_DENIED = 1;
 
 function settingsManager:ctor()
-	getDefinition("TypedList").ctor(self, "Setting");
+	getDefinition("TypedList").ctor(self, "class:Setting");
 	self:initChannels();
 	self:initEvents();
 end
@@ -23,10 +23,10 @@ function settingsManager:hasSetting(name)
 end
 
 function settingsManager:initChannels()
-	self._requestChannel = newInstance("NetworkChannel");
-	self._requestChannel.receive = wrap(self.handleRequestMessage, self);
-	self._commitChannel = newInstance("NetworkChannel");
-	self._commitChannel.receive = wrap(self.handleCommitMessage, self);
+	self._requestChannel = newInstance("NetworkChannel", "SettingsManager.RequestChannel");
+	self._requestChannel:getTransmissionReceivedEvent():subscribe("SettingsManager", wrap(self.handleRequestMessage, self));
+	self._commitChannel = newInstance("NetworkChannel", "SettingsManager.RequestChannel");
+	self._commitChannel:getTransmissionReceivedEvent():subscribe("SettingsManager", wrap(self.handleCommitMessage, self));
 end
 
 function settingsManager:getRequestChannel()
@@ -38,25 +38,30 @@ function settingsManager:getCommitChannel()
 end
 
 function settingsManager:initEvents()
-	self._requestAcceptedEvent = newInstance("Event");
+	self._settingUpdatedEvent = newInstance("Event");
 	self._requestDeniedEvent = newInstance("Event");
 	self._commitAcceptedEvent = newInstance("Event");
 	self._commitDeniedEvent = newInstance("Event");
 end
 
-function settingsManager:getRequestAcceptedEvent()
-	return self._requestAcceptedEvent;
+function settingsManager:getSettingUpdatedEvent()
+	return self._settingUpdatedEvent;
 end
 
 function settingsManager:getCommitAcceptedEvent()
 	return self._commitAcceptedEvent;
 end
 
+function settingsManager:commit(setting)
+	local packet = { name = setting:getName(), value = setting:getValue() };
+	self:getCommitChannel():transmit(packet);
+end
+
 if SERVER then
 	
-	function settingsManager:handleRequestMessage(request, ply)
-		assertArgument(2, "table", "nil");
-		assertArgument(3, "Player");
+	function settingsManager:handleRequestMessage(channel, request, ply)
+		assertArgument(3, "table");
+		assertArgument(4, "Player");
 		if self:isValidRequest(request) then
 			if self:isRequestAllowed(request, ply) then
 				local value = self:getSetting(request.name):getValue();
@@ -64,14 +69,16 @@ if SERVER then
 			else
 				self:sendRequestDenied(request, ply);
 			end
+		else
 		end
 	end
 	
-	function settingsManager:isRequestValid(request)
+	function settingsManager:isValidRequest(request)
+		PrintTable(request);
 		return (type(request.name) == "string") and (self:hasSetting(request.name));
 	end
 	
-	function settingaManager:isRequestAllowed(request, ply)
+	function settingsManager:isRequestAllowed(request, ply)
 		return self:getSetting(request.name):canRequest(ply);
 	end
 	
@@ -83,9 +90,9 @@ if SERVER then
 		self:getRequestChannel():transmit({ setting = request.name, result = settingsManager.REQUEST_DENIED }, ply);
 	end
 	
-	function settingsManager:handleCommitMessage(commit, ply)
-		assertArgument(2, "table", "nil");
-		assertArgument(3, "Player");
+	function settingsManager:handleCommitMessage(channel, commit, ply)
+		assertArgument(3, "table");
+		assertArgument(4, "Player");
 		if self:isValidCommit(commit) then
 			local setting = self:getSetting(commit.name);
 			if self:isCommitAllowed(commit, ply) then
@@ -99,7 +106,7 @@ if SERVER then
 		end
 	end
 	
-	function settingsManager:isCommitValid(commit)
+	function settingsManager:isValidCommit(commit)
 		return (type(commit.name) == "string") and (self:hasSetting(commit.name));
 	end
 	
@@ -117,14 +124,20 @@ if SERVER then
 	
 else
 	
+	function settingsManager:request(setting)
+		local packet = { name = setting:getName() };
+		self:getRequestChannel():transmit(packet);
+	end
+	
 	function settingsManager:handleRequestMessage(request)
-		assertArgument(2, "table", "nil");
+		assertArgument(2, "table");
 		if self:isValidRequestResponse(request) then
 			local setting = self:getSetting(request.name);
 			if self:isRequestAccepted(request) then
-				setting:setValue(request.value);
-				self:getRequestAcceptedEvent():fire(self, setting);
+				setting:onRequestAccepted(request.value);
+				self:getSettingUpdatedEvent():fire(self, setting);
 			else
+				setting:onRequestDenied();
 				self:getRequestDeniedEvent():fire(self, setting);
 			end
 		end
@@ -135,30 +148,29 @@ else
 	end
 	
 	function settingsManager:isRequestAccepted(request)
-		return request.result = settingsManager.REQUEST_ACCEPTED;
+		return (request.result == settingsManager.REQUEST_ACCEPTED);
 	end
 	
 	function settingsManager:handleCommitMessage(commit, ply)
-		assertArgument(2, "table", "nil");
-		if self:isValidCommitResponse(request) then
-			local setting = self:getSetting(request.name);
-			if self:isCommitAccepted(request) then
-				setting:receive(commit);
+		assertArgument(2, "table");
+		if self:isValidCommitResponse(commit) then
+			local setting = self:getSetting(commit.name);
+			if self:isCommitAccepted(commit) then
+				setting:onCommitAccepted();
 				self:getCommitAcceptedEvent():fire(self, setting);
 			else
+				setting:onCommitDenied();
 				self:getCommitDeniedEvent():fire(self, setting);
 			end
 		end
 	end
 	
-	function settingsManager:request(setting)
-		local packet = { name = setting:getName() };
-		self:getRequestChannel():transmit(packet);
+	function settingsManager:isValidCommitResponse(commit)
+		return (type(commit.name) == "string") and (self:hasSetting(commit.name)) and (type(commit.result) == "number");
 	end
-
-	function settingsManager:commit(setting)
-		local packet = { name = setting:getName(), value = setting:getValue() };
-		self:getCommitChannel():transmit(packet);
+	
+	function settingsManager:isCommitAccepted(commit)
+		return (commit.result == settingsManager.REQUEST_ACCEPTED);
 	end
 	
 end

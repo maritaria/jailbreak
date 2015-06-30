@@ -55,15 +55,9 @@ function team:getDefaultPlayerModel()
 	return self._defaultPlayerModel;
 end
 
-function team:setDefautlPlayerModel(value)
+function team:setDefaultPlayerModel(value)
 	assertArgument(2, "string");
 	self._defaultPlayerModel = value;
-end
-
-function team:onSpawn(ply)
-	assertArgument(2, "Player");
-	self:equipPlayer(ply);
-	self:runLegacySpawnHooks(ply);
 end
 
 function team:selectSpawnPoint(ply)
@@ -72,11 +66,22 @@ function team:selectSpawnPoint(ply)
 	return spawns[math.random(#spawns)];
 end
 
-function team:equipPlayer(ply)
+function team:handleSpawn(ply)
+	assertArgument(2, "Player");
+	self:applyObserverMode(ply);
+	self:initializePlayer(ply);
+	self:equipPlayer(ply);
+	self:runLegacySpawnHooks(ply);
+end
+
+function team:applyObserverMode(ply)
 	assertArgument(2, "Player");
 	ply:UnSpectate();
+end
+
+function team:initializePlayer(ply)
+	assertArgument(2, "Player");
 	ply:SetupHands();
-	
 	ply:SetWalkSpeed(400);
 	ply:SetRunSpeed(600);
 	ply:SetCrouchedWalkSpeed(0.3);
@@ -90,12 +95,13 @@ function team:equipPlayer(ply)
 	ply:ShouldDropWeapon(true);
 	ply:SetNoCollideWithTeammates(true);
 	ply:SetAvoidPlayers(true);
-	
+end
+
+function team:equipPlayer(ply)
+	assertArgument(2, "Player");
 	ply:StripWeapons();
 	ply:StripAmmo();
-	
 	ply:SetModel(self:getDefaultPlayerModel());
-	
 	self:getLoadout():giveToPlayer(ply);
 end
 

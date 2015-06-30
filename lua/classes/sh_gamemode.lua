@@ -28,7 +28,7 @@ function gamemode:unload() end
 
 function gamemode:playerSpawn(ply)
 	print("gamemode:playerSpawn("..tostring(ply)..")");
-	ply:getTeam():onSpawn(ply);
+	ply:getTeam():handleSpawn(ply);
 end
 
 function gamemode:playerSelectSpawn(ply)

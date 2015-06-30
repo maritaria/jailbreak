@@ -6,6 +6,11 @@ function spectators:ctor(identifier)
 	self:setKillOnLeave(false);
 end
 
+function spectators:applyObserverMode(ply)
+	assertArgument(2, "Player");
+	ply:Spectate(OBS_MODE_ROAMING);
+end
+
 function spectators:equipPlayer(ply)
 	getDefinition("Team").equipPlayer(self, ply);
 end

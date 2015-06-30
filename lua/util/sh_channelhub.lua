@@ -19,9 +19,10 @@ function channelhub.decode(message)
 end
 
 net.Receive(channelhub.NETWORK_STRING, function(length, ply)
-	local channelName = net.ReadString();
 	local contentLength = net.ReadUInt(32);
-	local data = channelhub.decode(net.ReadData(contentLength));
+	local packet = channelhub.decode(net.ReadData(contentLength));
+	local channelName = packet.channel;
+	local data = packet.data;
 	for _, channel in channelInstances[channelName]:enumerate() do
 		channel:receive(data, ply);
 	end

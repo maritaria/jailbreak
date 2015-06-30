@@ -32,7 +32,7 @@ end
 
 function teamManager:initChannels()
 	local channel = newInstance("NetworkChannel", "TeamManager");
-	channel.onReceived = wrap(self.onNotification, self);
+	channel:getTransmissionReceivedEvent():subscribe("TeamManager", wrap(self.onNotification, self));
 	self._notificationChannel = channel;
 end
 

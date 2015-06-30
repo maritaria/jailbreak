@@ -8,8 +8,8 @@ end
 
 function jailbreakState:enter()
 	print(self:getName() .. ".enter()");
-	getDefinition("State").enter(self);
 	self._stateStart = RealTime();
+	getDefinition("State").enter(self);
 end
 
 function jailbreakState:leave()

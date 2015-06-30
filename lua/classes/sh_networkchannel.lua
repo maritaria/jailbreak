@@ -16,15 +16,17 @@ function channel:getTransmissionReceivedEvent()
 end
 
 function channel:transmit(data, players)
-	data = { data = data or 0 };
-	self:writeData(data);
+	self:writePacket(data);
 	self:sendData(players);
 end
 
-function channel:writeData(data)
+function channel:writePacket(data)
 	net.Start(channelhub.NETWORK_STRING);
-	net.WriteString(self:getChannelName());
-	local message = channelhub.encode(data);
+	local packet = {
+		channel = self:getChannelName(),
+		data = data
+	};
+	local message = channelhub.encode(packet);
 	local length = #message;
 	net.WriteUInt(length, 32);
 	net.WriteData(message, length);

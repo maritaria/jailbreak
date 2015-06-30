@@ -4,13 +4,13 @@ function freeroam:ctor(machine)
 	getDefinition("Jailbreak.RoundState").ctor(self, "FreeRoam", machine);
 end
 
-function freeroam:onEnter()
+function freeroam:enter()
+	getDefinition("Jailbreak.RoundState").enter(self);
 	game.CleanUpMap();
 end
 
-function freeroam:onTick() end
-
-function freeroam:onLeave()
+function freeroam:leave()
+	getDefinition("Jailbreak.RoundState").leave(self);
 	for _, ply in pairs(player.GetAll()) do
 		if ply:Alive() then
 			ply:KillSilent();

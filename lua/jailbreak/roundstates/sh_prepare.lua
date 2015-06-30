@@ -4,7 +4,8 @@ function prepare:ctor(machine)
 	getDefinition("Jailbreak.RoundState").ctor(self, "Prepare", machine);
 end
 
-function prepare:onEnter()
+function prepare:enter()
+	getDefinition("Jailbreak.RoundState").enter(self);
 	self:setNextState(self:getMachine():getState("Play"));
 	self:killPlayers();
 	self:resetMap();
@@ -31,7 +32,7 @@ end
 
 function prepare:spawnPlayers()
 	print("prepare:spawnPlayers()");
-	for k, v in pairs(player.GetAll()) do
+	for _, ply in pairs(player.GetAll()) do
 		ply:Spawn();
 	end
 end
