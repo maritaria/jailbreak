@@ -1,5 +1,0 @@
-DataStorage = {};
-
-local requests = {};
-
-
