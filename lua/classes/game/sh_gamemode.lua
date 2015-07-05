@@ -10,7 +10,7 @@ function gamemode:getTeamManager()
 end
 
 function gamemode:setTeamManager(value)
-	assertArgument(2, "class:TeamManager");
+	assertArgument(2, "TeamManager");
 	self._teamManager = value;
 end
 

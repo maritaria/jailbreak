@@ -3,9 +3,7 @@ function assertType(value, types, message, ...)
 	assert(type(types) == "table");
 	vtype = type(value);
 	for k, t in pairs(types) do
-		if t:StartWith("class:") and pcall(assertClass, value, t:sub(7), message, ...) then
-			return;
-		elseif (vtype == t) then
+		if (vtype == t) or pcall(assertClass, value, t, message, ...) then
 			return;
 		end
 	end

@@ -2,7 +2,7 @@ local query = newClass("Query", "Base");
 
 function query:ctor(qry, provider)
 	assertArgument(2, "string");
-	assertArgument(3, "class:DatabaseProvider");
+	assertArgument(3, "DatabaseProvider");
 	getDefinition("Base").ctor(self);
 	self._query = qry;
 	self._provider = provider;

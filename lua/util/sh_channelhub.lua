@@ -4,7 +4,7 @@ channelhub.NETWORK_STRING = "networkchannel";
 local channelInstances = {};
 
 function channelhub.add(channel)
-	assertArgument(1, "class:NetworkChannel");
+	assertArgument(1, "NetworkChannel");
 	local channelName = channel:getChannelName();
 	channelInstances[channelName] = channelInstances[channelName] or newInstance("WeakList");
 	channelInstances[channelName]:add(channel);
@@ -23,7 +23,7 @@ net.Receive(channelhub.NETWORK_STRING, function(length, ply)
 	local packet = channelhub.decode(net.ReadData(contentLength));
 	local channelName = packet.channel;
 	local data = packet.data;
-	for _, channel in channelInstances[channelName]:enumerate() do
+	for _, channel in pairs(channelInstances[channelName]) do
 		channel:receive(data, ply);
 	end
 end);

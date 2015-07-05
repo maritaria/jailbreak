@@ -6,6 +6,11 @@ function prisoners:ctor(identifier)
 	self:setKillOnLeave(true);
 end
 
+function prisoners:initLoadout(loadout)
+	
+end
+
+--[[--
 function prisoners:equipPlayer(ply)
 	getDefinition("Team").equipPlayer(self, ply);
 end
@@ -13,3 +18,4 @@ end
 function prisoners:unequipPlayer(ply)
 	getDefinition("Team").unequipPlayer(self, ply);
 end
+--]]--

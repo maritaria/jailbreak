@@ -6,6 +6,11 @@ function guards:ctor(identifier)
 	self:setKillOnLeave(true);
 end
 
+function guards:initLoadout(loadout)
+	
+end
+
+--[[--
 function guards:equipPlayer(ply)
 	getDefinition("Team").equipPlayer(self, ply);
 end
@@ -13,3 +18,4 @@ end
 function guards:unequipPlayer(ply)
 	getDefinition("Team").unequipPlayer(self, ply);
 end
+--]]--

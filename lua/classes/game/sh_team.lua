@@ -1,5 +1,4 @@
 local team = newClass("Team", "Base");
---extendClass(team, "ISerializable");
 
 function team:ctor(identifier)
 	assertArgument(2, "number");
@@ -10,6 +9,8 @@ function team:ctor(identifier)
 	self._respawnOnJoin = false;
 	self._loadout = newInstance("Loadout");
 	self._defaultPlayerModel = "models/Kleiner.mdl";
+	
+	self:initLoadout(self:getLoadout());
 end
 
 function team:getIdentifier()
@@ -49,6 +50,10 @@ end
 
 function team:setLoadout(value)
 	self._loadout = value;
+end
+
+function team:initLoadout(loadout)
+	
 end
 
 function team:getDefaultPlayerModel()
@@ -157,7 +162,7 @@ function meta:getTeam()
 end
 
 function meta:setTeam(value)
-	assertArgument(2, "class:Team", "nil");
+	assertArgument(2, "Team", "nil");
 	if (self[team] != nil) then
 		self[team]:onPlayerLeave(self);
 	end

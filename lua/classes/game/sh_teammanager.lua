@@ -2,7 +2,7 @@ local teamManager = newClass("TeamManager");
 
 function teamManager:ctor()
 	getDefinition("Base").ctor(self);
-	self._teams = newInstance("TypedList", "class:Team");
+	self._teams = newInstance("TypedList", "Team");
 	self._defaultTeam = nil;
 	self:initChannels();
 end
@@ -17,7 +17,7 @@ function teamManager:getDefaultTeam()
 end
 
 function teamManager:setDefaultTeam(value)
-	assertArgument(2, "class:Team");
+	assertArgument(2, "Team");
 	assert(self:getTeams():contains(value), "team does not belong to this TeamManager");
 	self._defaultTeam = value;
 end

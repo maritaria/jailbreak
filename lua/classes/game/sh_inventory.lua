@@ -1,12 +1,9 @@
-print("not yet implemented");
-do return end;
-local inventory = newClass("Inventory");
+local inventory = newClass("Inventory", "Serializable");
 
 function inventory:ctor()
-	getDefinition("Base").ctor(self);
+	getDefinition("Serializable").ctor(self, "InventoryItem");
 	self._width = -1;
-	self._hidth = -1;
-	self._items = {};
+	self._height = -1;
 end
 
 function inventory:getWidth()
@@ -15,7 +12,7 @@ end
 
 function inventory:setWidth(value)
 	assertArgument(2, "number");
-	self:resize(value, self:getHeight());
+	self._width = value;
 end
 
 function inventory:getHeight()
@@ -24,7 +21,12 @@ end
 
 function inventory:setHeight(value)
 	assertArgument(2, "number");
-	self:resize(self:getWidth(), value);
+	self._height = value;
+end
+
+function inventory:resize(width, height)
+	self:setWidth(width);
+	self:setHeight(height);
 end
 
 function inventory:getCapacity()
@@ -34,9 +36,3 @@ function inventory:getCapacity()
 	end
 	return w * h;
 end
-
-function inventory:getCount()
-	return #self._items;
-end
-
-

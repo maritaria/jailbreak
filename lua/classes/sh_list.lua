@@ -4,11 +4,18 @@ function list:ctor(initial_collection)
 	assertArgument(2, "table", "nil");
 	getDefinition("Base").ctor(self);
 	self._items = table.Merge(self._items or {}, initial_collection or {});
+	getmetatable(self).__pairs = self.enumerate;
 end
 
 function list:add(item)
 	table.insert(self._items, item);
 	return item;
+end
+
+function list:addRange(items)
+	for _, item in pairs(items) do
+		self:add(item);
+	end
 end
 
 function list:insert(item, index)
@@ -50,4 +57,8 @@ end
 
 function list:enumerate()
 	return pairs(self._items);
+end
+
+function list:getCount()
+	return #self._items;
 end

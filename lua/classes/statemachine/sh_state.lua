@@ -2,7 +2,7 @@ local state = newClass("State", "Base");
 
 function state:ctor(name, machine)
 	assertArgument(2, "string");
-	assertArgument(3, "class:StateMachine");
+	assertArgument(3, "StateMachine");
 	getDefinition("Base").ctor(self);
 	self._name = name;
 	self._active = false;

@@ -22,9 +22,3 @@ function jailbreakStateMachine:setActiveState(state)
 		self:broadcastCurrentState();
 	end
 end
-
-function jailbreakStateMachine:broadcastCurrentState()
-	
-end
-
-include_dir("jailbreak/roundstates");

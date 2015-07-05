@@ -1,7 +1,7 @@
 local setting = newClass("Setting", "Base");
 
 function setting:ctor(manager, name, value)
-	assertArgument(2, "class:SettingsManager");
+	assertArgument(2, "SettingsManager");
 	assertArgument(3, "string");
 	getDefinition("Base").ctor(self);
 	self._manager = manager;
@@ -25,7 +25,7 @@ function setting:getName()
 	return self._name;
 end
 
-function setting:getValue()
+function setting:getValue(default)
 	if CLIENT and not self:isReceived() then
 		self:request();
 	end
@@ -109,12 +109,19 @@ if CLIENT then
 
 	function setting:onCommitAccepted()
 		self._commitPending = false;
-		self:getCommitAcceptedEvent();fire(self);
+		self:getCommitAcceptedEvent():fire(self);
 	end
 
 	function setting:onCommitDenied()
 		self._commitPending = false;
-		self:getCommitDeniedEvent();fire(self);
+		self:getCommitDeniedEvent():fire(self);
+	end
+	
+else
+	
+	function setting:updatePlayer(ply)
+		assertArgument(2, "Player");
+		self:getManager():commit(self, ply);
 	end
 	
 end

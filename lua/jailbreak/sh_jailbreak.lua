@@ -47,5 +47,3 @@ end
 function jailbreak:shutDown()
 	getDefinition("Gamemode").shutDown(self);
 end
-
-include_dir("jailbreak/teams");

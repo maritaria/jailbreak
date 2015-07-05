@@ -33,7 +33,7 @@ function jailbreakState:getNextState()
 end
 
 function jailbreakState:setNextState(value)
-	assertArgument(2, "class:State");
+	assertArgument(2, "State");
 	self._nextState = value;
 end
 

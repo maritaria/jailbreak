@@ -8,7 +8,7 @@ function include_file(filePath)
 	end
 	if (isServer and CLIENT) then return end;
 	if (isClient and SERVER) then return end;
-	print("[jailbreak] Including lua file: " .. filePath);
+	--print("[JailBreak] " .. filePath);
 	include(filePath);
 end
 
@@ -24,11 +24,26 @@ function include_dir(filePath)
 	end
 end
 
-include_dir("util");
-include_dir("util/3rdparty");
-include_dir("classes");
-include_dir("jailbreak");
---include_dir("sleekmanager");
---include_dir("virtualarmory");
---include_dir("modsit");
---include_dir("kenui");
+function include_dir_recursive(filePath)
+	assert(type(filePath) == "string");
+	assert(type(filePath) == "string");
+	if (string.sub(filePath, -1) != "/") then
+		filePath = filePath .. "/";
+	end
+	include_dir(filePath);
+	local pattern = filePath .. "*";
+	local files, directories = file.Find(pattern, "LUA");
+	for _, dir in pairs(directories) do
+		include_dir_recursive(filePath .. dir);
+	end
+end
+
+include_dir_recursive("util");
+include_dir_recursive("classes");
+include_dir_recursive("jailbreak");
+
+print("Jailbreak loaded");
+--include_dir_recursive("sleekmanager");
+--include_dir_recursive("virtualarmory");
+--include_dir_recursive("modsit");
+--include_dir_recursive("kenui");

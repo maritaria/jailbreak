@@ -3,39 +3,26 @@ local stateMachine = newClass("StateMachine", "Base");
 function stateMachine:ctor()
 	getDefinition("Base").ctor(self);
 	self._activeState = nil;
-	self._states = {};
+	self._states = newInstance("TypedList", "State");
 	self._started = false;
 end
 
 function stateMachine:addState(state)
-	assertArgument(2, "class:State");
+	assertArgument(2, "State");
 	assert(not self:isStarted(), "cannot edit states after machine has started");
 	assert(not self:hasState(state));
-	table.insert(self._states, state);
-end
-
-function stateMachine:newState(name, tick, enter, leave)
-	assertArgument(2, "string");
-	assertArgument(3, "function", "nil");
-	assertArgument(4, "function", "nil");
-	assertArgument(5, "function", "nil");
-	local state = classes.newInstance("State", name, self);
-	state.onTick = tick or state.onTick;
-	state.onEnter = enter or state.onEnter;
-	state.onLeave = leave or state.onLeave;
-	self:addState(state);
-	return state;
+	self._states:add(state);
 end
 
 function stateMachine:removeState(state)
-	assertArgument(2, "class:State");
+	assertArgument(2, "State");
 	assert(not self:isStarted(), "cannot edit states after machine has started");
-	table.remove(self._states, state);
+	self._states:remove(state);
 end
 
 function stateMachine:hasState(state)
-	assertArgument(2, "class:State");
-	return self:getState(state:getName()) != nil;
+	assertArgument(2, "State");
+	return self._states:contains(state);
 end
 
 function stateMachine:getState(name)
@@ -52,7 +39,7 @@ function stateMachine:getActiveState()
 end
 
 function stateMachine:setActiveState(newState)
-	assertArgument(2, "class:State");
+	assertArgument(2, "State");
 	assert(self:hasState(newState));
 	if self:isStarted() then
 		self:getActiveState():leave(newState);
