@@ -2,7 +2,7 @@ local gamemode = newClass("Gamemode", "Base");
 
 function gamemode:ctor()
 	getDefinition("Base").ctor(self);
-	self:setTeamManager(newInstance("TeamManager"));
+	self:setTeamManager(newInstance("TeamManager", self));
 end
 
 function gamemode:getTeamManager()

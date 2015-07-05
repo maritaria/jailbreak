@@ -27,7 +27,7 @@ end
 
 function prepare:balanceTeams()
 	print("prepare:balanceTeams()");
-	
+	GAMEMODE:getGamemode():getBalancer():balance();
 end
 
 function prepare:spawnPlayers()

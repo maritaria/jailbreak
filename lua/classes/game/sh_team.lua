@@ -5,10 +5,10 @@ function team:ctor(identifier)
 	getDefinition("Base").ctor(self);
 	self._name = "Unnamed";
 	self._identifier = identifier;
-	self._killOnLeave = true;
-	self._respawnOnJoin = false;
 	self._loadout = newInstance("Loadout");
 	self._defaultPlayerModel = "models/Kleiner.mdl";
+	self._playerJoinEvent = newInstance("Event");
+	self._playerLeaveEvent = newInstance("Event");
 	
 	self:initLoadout(self:getLoadout());
 end
@@ -24,24 +24,6 @@ end
 function team:setName(value)
 	assertArgument(2, "string");
 	self._name = value;
-end
-
-function team:getKillOnLeave()
-	return self._killOnLeave;
-end
-
-function team:setKillOnLeave(value)
-	assertArgument(2, "boolean");
-	self._killOnLeave = value;
-end
-
-function team:getSpawnOnJoin()
-	return self._respawnOnJoin;
-end
-
-function team:setSpawnOnJoin(value)
-	assertArgument(2, "boolean");
-	self._respawnOnJoin = value;
 end
 
 function team:getLoadout()
@@ -63,6 +45,14 @@ end
 function team:setDefaultPlayerModel(value)
 	assertArgument(2, "string");
 	self._defaultPlayerModel = value;
+end
+
+function team:getPlayerJoinEvent()
+	return self._playerJoinEvent;
+end
+
+function team:getPlayerLeaveEvent()
+	return self._playerLeaveEvent;
 end
 
 function team:selectSpawnPoint(ply)
@@ -124,19 +114,12 @@ end
 
 function team:onPlayerJoin(ply)
 	assertArgument(2, "Player");
-	ply:SetTeam(self:getIdentifier());
-	if (self:getSpawnOnJoin()) then
-		ply:Spawn();
-	end
-	hook.Run("PlayerSwitchedTeam", ply, self);
+	self:getPlayerJoinEvent():fire(ply, self);
 end
 
 function team:onPlayerLeave(ply)
 	assertArgument(2, "Player");
-	self:unequipPlayer(ply);
-	if (self:getKillOnLeave()) then
-		ply:KillSilent();
-	end
+	self:getPlayerLeaveEvent():fire(ply, self);
 end
 
 function team:getPlayerCount()

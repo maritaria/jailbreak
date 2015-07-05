@@ -1,7 +1,7 @@
-local teamManager = newClass("TeamManager");
+local teamManager = newClass("TeamManager", "GamemodeComponent");
 
-function teamManager:ctor()
-	getDefinition("Base").ctor(self);
+function teamManager:ctor(gamemode)
+	getDefinition("GamemodeComponent").ctor(self, gamemode);
 	self._teams = newInstance("TypedList", "Team");
 	self._defaultTeam = nil;
 	self:initChannels();

@@ -1,7 +1,7 @@
-local guards = newClass("Jailbreak.GuardsTeam", "Team");
+local guards = newClass("Jailbreak.GuardsTeam", "Jailbreak.Team");
 
 function guards:ctor(identifier)
-	getDefinition("Team").ctor(self, identifier);
+	getDefinition("Jailbreak.Team").ctor(self, identifier);
 	self:setName("guards");
 	self:setKillOnLeave(true);
 end
@@ -9,13 +9,3 @@ end
 function guards:initLoadout(loadout)
 	
 end
-
---[[--
-function guards:equipPlayer(ply)
-	getDefinition("Team").equipPlayer(self, ply);
-end
-
-function guards:unequipPlayer(ply)
-	getDefinition("Team").unequipPlayer(self, ply);
-end
---]]--
