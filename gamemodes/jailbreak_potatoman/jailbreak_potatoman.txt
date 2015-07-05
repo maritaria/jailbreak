@@ -1,4 +1,4 @@
-"jailbreak"
+"jailbreak_potatoman"
 {
 	"base"			"base"
 	"title"			"Jailbreak"
