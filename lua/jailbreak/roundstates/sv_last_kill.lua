@@ -1,0 +1,1 @@
+local last_kill = newClass("Jailbreak.LastKillState", "Jailbreak.RoundState");

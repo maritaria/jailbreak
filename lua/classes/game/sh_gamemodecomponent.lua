@@ -8,3 +8,7 @@ end
 function component:getGamemode()
 	return self._gamemode;
 end
+
+function component:initSettings(manager)
+	
+end

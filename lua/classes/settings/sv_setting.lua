@@ -6,10 +6,26 @@ end
 
 function setting:setValue(value)
 	self._value = value;
-	self:getManager():commit(self);
+	self:update();
 end
 
-function setting:commit(ply)
-	assertArgument(2, "Player", "table");
-	self:getManager():commit(self, ply);
+function setting:update(players)
+	assertArgument(2, "Player", "table", "nil");
+	self:getManager():update(self, players);
+end
+
+function setting:onRequestAccepted(ply)
+	self:getRequestAcceptedEvent():fire(self, ply);
+end
+
+function setting:onRequestDenied(ply)
+	self:getRequestDeniedEvent():fire(self, ply);
+end
+
+function setting:onCommitAccepted(ply)
+	self:getCommitAcceptedEvent():fire(self, ply);
+end
+
+function setting:onCommitDenied(ply)
+	self:getCommitDeniedEvent():fire(self, ply);
 end

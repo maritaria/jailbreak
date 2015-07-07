@@ -32,22 +32,6 @@ function setting:isModified()
 	return self:getLastReceivedValue() != self:getValue();
 end
 
-function setting:getValueUpdatedEvent()
-	return self._valueUpdatedEvent;
-end
-
-function setting:getRequestDeniedEvent()
-	return self._requestDeniedEvent;
-end
-
-function setting:getCommitAcceptedEvent()
-	return self._commitAcceptedEvent;
-end
-
-function setting:getCommitDeniedEvent()
-	return self._commitDeniedEvent;
-end
-
 function setting:request()
 	if not self:isRequested() then
 		self:getManager():request(self);
@@ -62,12 +46,18 @@ function setting:commit()
 	end
 end
 
-function setting:onRequestAccepted(value)
+function setting:onValueUpdated(value)
 	self._received = true;
-	self._requested = false;
 	self._value = value;
 	self._lastReceivedValue = value;
+	PrintTable(self);
 	self:getValueUpdatedEvent():fire(self);
+end
+
+function setting:onRequestAccepted(value)
+	self._requested = false;
+	self:onValueUpdated(value);
+	self:getRequestAcceptedEvent():fire(self);
 end
 
 function setting:onRequestDenied()

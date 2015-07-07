@@ -25,6 +25,8 @@ end
 function settingsManager:initChannels()
 	self._updateChannel = newInstance("NetworkChannel", "SettingsManager.UpdateChannel");
 	self._updateChannel:getTransmissionReceivedEvent():subscribe("SettingsManager", wrap(self.handleUpdate, self));
+	self._requestChannel = newInstance("NetworkChannel", "SettingsManager.RequestChannel");
+	self._requestChannel:getTransmissionReceivedEvent():subscribe("SettingsManager", wrap(self.handleRequest, self));
 	self._commitChannel = newInstance("NetworkChannel", "SettingsManager.CommitChannel");
 	self._commitChannel:getTransmissionReceivedEvent():subscribe("SettingsManager", wrap(self.handleCommit, self));
 end
@@ -33,13 +35,18 @@ function settingsManager:getUpdateChannel()
 	return self._updateChannel;
 end
 
+function settingsManager:getRequestChannel()
+	return self._commitChannel;
+end
+
 function settingsManager:getCommitChannel()
 	return self._commitChannel;
 end
 
 function settingsManager:initEvents()
 	self._settingUpdatedEvent = newInstance("Event");
-	self._updateDeniedEvent = newInstance("Event");
+	self._requestAcceptedEvent = newInstance("Event");
+	self._requestDeniedEvent = newInstance("Event");
 	self._commitAcceptedEvent = newInstance("Event");
 	self._commitDeniedEvent = newInstance("Event");
 end
@@ -48,8 +55,12 @@ function settingsManager:getSettingUpdatedEvent()
 	return self._settingUpdatedEvent;
 end
 
-function settingsManager:getUpdateDeniedEvent()
-	return self._updateDeniedEvent;
+function settingsManager:getRequestAcceptedEvent()
+	return self._requestAcceptedEvent;
+end
+
+function settingsManager:getRequestDeniedEvent()
+	return self._requestDeniedEvent;
 end
 
 function settingsManager:getCommitAcceptedEvent()

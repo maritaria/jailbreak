@@ -9,11 +9,6 @@ function roundStateMachine:ctor(gamemode)
 	self:addJailbreakState("Play");
 	self:addJailbreakState("LastRequest");
 	self:addJailbreakState("LastKill");
-	self:setActiveState(self:getState("FreeRoam"));
-end
-
-function roundStateMachine:getGamemode()
-	return self._gamemode;
 end
 
 function roundStateMachine:addJailbreakState(name)
@@ -22,9 +17,24 @@ function roundStateMachine:addJailbreakState(name)
 	self:addState(classes.newInstance(className, self));
 end
 
-function roundStateMachine:setActiveState(state)
-	getDefinition("StateMachine").setActiveState(self, state);
-	if SERVER then
-		self:broadcastCurrentState();
+function roundStateMachine:getActiveStateSetting()
+	return self._activeStateSetting;
+end
+
+function roundStateMachine:getGamemode()
+	return self._gamemode;
+end
+
+function roundStateMachine:initSettings(manager)
+	self._activeStateSetting = newInstance("ReadonlySetting", manager, "RoundStateMachine.ActiveState", "FreeRoam");
+	if CLIENT then
+		self._activeStateSetting:getValueUpdatedEvent():subscribe("RoundStateMachine", wrap(self.onActiveValueUpdated, self));
+	end
+	if (self:isStarted()) then
+		if SERVER then
+			self:broadcastState();
+		else
+			self:requestState();
+		end
 	end
 end

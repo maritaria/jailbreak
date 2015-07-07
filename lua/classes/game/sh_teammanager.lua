@@ -4,7 +4,10 @@ function teamManager:ctor(gamemode)
 	getDefinition("GamemodeComponent").ctor(self, gamemode);
 	self._teams = newInstance("TypedList", "Team");
 	self._defaultTeam = nil;
-	self:initChannels();
+end
+
+function teamManager:addTeam(team)
+	self:getTeams():add(team);
 end
 
 function teamManager:getTeams()
@@ -23,24 +26,9 @@ function teamManager:setDefaultTeam(value)
 end
 
 function teamManager:getTeamByIdentifier(identifier)
-	for _, team in self:getTeams():enumerate() do
+	for _, team in pairs(self:getTeams()) do
 		if (team:getIdentifier() == identifier) then
 			return team;
 		end
-	end
-end
-
-function teamManager:initChannels()
-	local channel = newInstance("NetworkChannel", "TeamManager");
-	channel:getTransmissionReceivedEvent():subscribe("TeamManager", wrap(self.onNotification, self));
-	self._notificationChannel = channel;
-end
-
-function teamManager:onNotification(channel, data, ply)
-	error("not yet implemented");
-	if SERVER then
-		
-	else
-		
 	end
 end

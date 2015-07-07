@@ -14,17 +14,24 @@ function gamemode:setTeamManager(value)
 	self._teamManager = value;
 end
 
-function gamemode:onGamemodeLoaded()
-	self:load();
+function gamemode:initPostEntity()
+	return self:start();
 end
 
-function gamemode:load() end
+function gamemode:start()
+end
 
 function gamemode:shutDown()
-	self:unload();
+	return self:stop();
 end
 
-function gamemode:unload() end
+function gamemode:stop()
+end
+
+function gamemode:playerInitialSpawn(ply)
+	print("gamemode:playerInitialSpawn("..tostring(ply)..")");
+	ply:setTeam(self:getTeamManager():getDefaultTeam());
+end
 
 function gamemode:playerSpawn(ply)
 	print("gamemode:playerSpawn("..tostring(ply)..")");
@@ -35,10 +42,3 @@ function gamemode:playerSelectSpawn(ply)
 	print("gamemode:playerSelectSpawn("..tostring(ply)..")");
 	return ply:getTeam():selectSpawnPoint(ply);
 end
-
-function gamemode:playerInitialSpawn(ply)
-	print("gamemode:playerInitialSpawn("..tostring(ply)..")");
-	ply:setTeam(self:getTeamManager():getDefaultTeam());
-end
-
-function gamemode:keyPressed(ply, key) end

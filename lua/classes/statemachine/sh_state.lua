@@ -37,25 +37,25 @@ function state:getStateLeftEvent()
 end
 
 function state:tick()
-	assert(self:isActive(), "The state is not the active state");
+	assert(self:isActive(), string.format("The state '%s' is not the active state", self:getName()));
 	self:getStateTickEvent():fire(self);
 end
 
 function state:enter()
-	assert(not self:isActive(), "The state is already active");
+	assert(not self:isActive(), string.format("The state '%s' is not the active state", self:getName()));
 	self._active = true;
 	self:getStateEnteredEvent():fire(self);
 end
 
 function state:leave()
-	assert(self:isActive(), "The state is not the active state");
+	assert(self:isActive(), string.format("The state '%s' is not the active state", self:getName()));
 	self._active = false;
 	self:getStateLeftEvent():fire(self);
 end
 
 function state:changeTo(stateName)
 	assertArgument(2, "string");
-	assert(self:isActive(), "The state is not the active state");
+	assert(self:isActive(), string.format("The state '%s' is not the active state", self:getName()));
 	local otherState = self:getMachine():getState(otherState);
 	self:getMachine():setActiveState(otherState);
 end

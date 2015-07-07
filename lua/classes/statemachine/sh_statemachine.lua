@@ -32,6 +32,7 @@ function stateMachine:getState(name)
 			return state;
 		end
 	end
+	error(string.format("State not found: '%s'", name));
 end
 
 function stateMachine:getActiveState()
@@ -42,7 +43,8 @@ function stateMachine:setActiveState(newState)
 	assertArgument(2, "State");
 	assert(self:hasState(newState));
 	if self:isStarted() then
-		self:getActiveState():leave(newState);
+		local currentState = self:getActiveState();
+		xpcall(currentState.leave, ErrorNoHalt, currentState, newState);
 	end
 	self._started = true;
 	self._activeState = newState;

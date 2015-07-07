@@ -12,13 +12,25 @@ function settingsManager:commit(setting)
 	self:getCommitChannel():transmit(packet);
 end
 
-function settingsManager:handleUpdate(channel, request)
+function settingsManager:handleUpdate(channel, update)
+	if self:isValidUpdate(update) then
+		local setting = self:getSetting(update.name);
+		setting:onValueUpdated(update.value);
+		self:getSettingUpdatedEvent():fire(self, setting);
+	end
+end
+
+function settingsManager:isValidUpdate(update)
+	return (type(update.name) == "string") and (self:hasSetting(update.name));
+end
+
+function settingsManager:handleRequest(channel, request)
 	assertArgument(3, "table");
 	if self:isValidRequestResponse(request) then
 		local setting = self:getSetting(request.name);
 		if self:isRequestAccepted(request) then
 			setting:onRequestAccepted(request.value);
-			self:getSettingUpdatedEvent():fire(self, setting);
+			self:getRequestAcceptedEvent():fire(self, setting);
 		else
 			setting:onRequestDenied();
 			self:getRequestDeniedEvent():fire(self, setting);
