@@ -25,8 +25,7 @@ function freeroam:getValidPlayerCount()
 end
 
 function freeroam:getRequiredPlayerCount()
-	local gamemode = self:getMachine():getGamemode();
-	local setting = gamemode:getMinimumPlayerCountSetting();
+	local setting = self:getGamemode():getMinimumPlayerCountSetting();
 	return setting:getValue();
 end
 

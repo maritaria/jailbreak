@@ -23,7 +23,7 @@ end
 
 function prepare:balanceTeams()
 	print("prepare:balanceTeams()");
-	self:getMachine():getGamemode():getTeamBalancer():balance();
+	self:getGamemode():getTeamBalancer():balance();
 end
 
 function prepare:spawnPlayers()
