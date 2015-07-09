@@ -1,1 +1,1 @@
-local last_request = newClass("Jailbreak.LastRequestState", "Jailbreak.RoundState");
+local lastRequest = newClass("Jailbreak.LastRequestState", "Jailbreak.RoundState");

@@ -1,5 +1,5 @@
-local last_kill = newClass("Jailbreak.LastKillState", "Jailbreak.RoundState");
+local lastKill = newClass("Jailbreak.LastKillState", "Jailbreak.RoundState");
 
-function last_kill:ctor(machine)
+function lastKill:ctor(machine)
 	getDefinition("Jailbreak.RoundState").ctor(self, "LastKill", machine);
 end
