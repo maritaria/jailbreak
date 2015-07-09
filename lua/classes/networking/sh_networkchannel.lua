@@ -16,6 +16,7 @@ function channel:getTransmissionReceivedEvent()
 end
 
 function channel:transmit(data, players)
+	channelhub.assertNetworkingAvailable();
 	self:writePacket(data);
 	self:sendData(players);
 end
