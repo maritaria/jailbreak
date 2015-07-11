@@ -2,7 +2,7 @@ channelhub = channelhub or {};
 channelhub.NETWORK_STRING = "networkchannel";
 
 local channelInstances = {};
-local networkingAvaiable = false;
+local networkingAvailable = false;
 
 function channelhub.add(channel)
 	assertArgument(1, "NetworkChannel");
@@ -34,7 +34,7 @@ if SERVER then
 end
 
 hook.Add("InitPostEntity", "channelhub", function()
-	networkingAvaiable = true;
+	networkingAvailable = true;
 end);
 
 function channelhub.assertNetworkingAvailable()
