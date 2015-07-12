@@ -6,7 +6,7 @@ function prepare:enter()
 	self:resetMap();
 	self:balanceTeams();
 	self:spawnPlayers();
-	self:setNextState(self:getMachine():getState("Play"));
+	self:changeTo("Play");
 end
 
 function prepare:killPlayers()

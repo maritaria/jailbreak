@@ -16,6 +16,15 @@ function jailbreak:getWardenSetting()
 	return self._wardenSetting;
 end
 
+function jailbreak:getWarden()
+	return self:getWardenSetting():getValue();
+end
+
+function jailbreak:setWarden(value)
+	assertArgument(2, "Entity");
+	self:getWardenSetting():getValue();
+end
+
 function jailbreak:getMinimumPlayerCountSetting()
 	return self._minimumPlayerCountSetting;
 end
