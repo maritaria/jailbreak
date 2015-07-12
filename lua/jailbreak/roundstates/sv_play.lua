@@ -6,7 +6,7 @@ function play:enter()
 end
 
 function play:selectWarden()
-	local guards = self:getMachine():getGamemode():getGuardTeam();
+	local guards = self:getGamemode():getGuardTeam();
 	local pool = guards:getPlayers();
 	local index = math.random(1, #pool);
 	local warden = pool[index];
@@ -18,8 +18,8 @@ end
 function play:tick()
 	getDefinition("Jailbreak.RoundState").tick(self);
 	
-	local prisonerTeam = self:getMachine():getGamemode():getPrisonerTeam();
-	local guardTeam = self:getMachine():getGamemode():getGuardTeam();
+	local prisonerTeam = self:getGamemode():getPrisonerTeam();
+	local guardTeam = self:getGamemode():getGuardTeam();
 	
 	local prisonerCount = self:getLiveCount(prisonerTeam);
 	local guardCount = self:getLiveCount(guardTeam);
