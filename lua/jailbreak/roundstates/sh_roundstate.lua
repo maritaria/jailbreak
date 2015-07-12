@@ -21,3 +21,26 @@ end
 function jailbreakState:getGamemode()
 	return self._gamemode;
 end
+
+function jailbreakState:getPrisonerTeam()
+	return self:getGamemode():getPrisonerTeam();
+end
+
+function jailbreakState:getGuardTeam()
+	return self:getGamemode():getGuardTeam();
+end
+
+function jailbreakState:getLiveCount(team)
+	local count = 0;
+	for _, ply in pairs(team:getPlayers()) do
+		if ply:Alive() then
+			count = count + 1;
+		end
+	end
+	return count;
+end
+
+function jailbreakState:isWardenAlive()
+	local warden = self:getGamemode():getWarden();
+	return IsValid(warden) and warden:IsPlayer() and warden:Alive();
+end

@@ -33,21 +33,6 @@ function play:tick()
 	end
 end
 
-function play:getLiveCount(team)
-	local count = 0;
-	for _, ply in pairs(team) do
-		if ply:Alive() then
-			count = count + 1;
-		end
-	end
-	return count;
-end
-
-function play:isWardenAlive()
-	local warden = self:getGamemode():getWarden();
-	return IsValid(warden) and warden:IsPlayer() and warden:Alive();
-end
-
 function play:leave()
 	getDefintion("Jailbreak.RoundState").leave(self);
 end

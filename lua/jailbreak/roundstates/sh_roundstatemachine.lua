@@ -9,6 +9,7 @@ function roundStateMachine:ctor(gamemode)
 	self:addJailbreakState("Play");
 	self:addJailbreakState("LastRequest");
 	self:addJailbreakState("LastKill");
+	self:addJailbreakState("Freeday");
 end
 
 function roundStateMachine:addJailbreakState(name)

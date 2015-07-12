@@ -1,15 +1,17 @@
 local freeday = newClass("Jailbreak.FreedayState", "Jailbreak.RoundState");
 
-function freeday:tick()
-	getDefinition("Jailbreak.RoundState").tick(self);
-	
-	local prisonerTeam = self:getGamemode():getPrisonerTeam();
-	local guardTeam = self:getGamemode():getGuardTeam();
-	
-	local prisonerCount = self:getLiveCount(prisonerTeam);
-	local guardCount = self:getLiveCount(guardTeam);
-	
-	if (prisonerCount == 0) or (guardCount == 0) then
-		self:changeTo("LastKill");
-	end
+function freeday:shouldStateChange()
+	return self:haveAllPrisonersDied() or self:haveAllGuardsDied();
+end
+
+function freeday:haveAllPrisonersDied()
+	return self:getLiveCount(self:getPrisonerTeam()) == 0;
+end
+
+function freeday:haveAllGuardsDied()
+	return self:getLiveCount(self:getGuardTeam()) == 0;
+end
+
+function freeday:getNextState()
+	self:getMachine():getState("Prepare");
 end
