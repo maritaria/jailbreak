@@ -21,7 +21,7 @@ function jailbreak:getWarden()
 end
 
 function jailbreak:setWarden(value)
-	assertArgument(2, "Entity");
+	assertArgument(2, "Player", "Entity");
 	self:getWardenSetting():getValue();
 end
 

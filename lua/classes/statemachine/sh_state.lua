@@ -56,6 +56,6 @@ end
 function state:changeTo(stateName)
 	assertArgument(2, "string");
 	assert(self:isActive(), string.format("The state '%s' is not the active state", self:getName()));
-	local otherState = self:getMachine():getState(otherState);
+	local otherState = self:getMachine():getState(stateName);
 	self:getMachine():setActiveState(otherState);
 end
