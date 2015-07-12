@@ -13,5 +13,5 @@ function freeday:haveAllGuardsDied()
 end
 
 function freeday:getNextState()
-	self:getMachine():getState("Prepare");
+	return self:getMachine():getState("Prepare");
 end

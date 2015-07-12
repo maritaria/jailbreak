@@ -22,7 +22,7 @@ end
 
 function jailbreak:setWarden(value)
 	assertArgument(2, "Player", "Entity");
-	self:getWardenSetting():getValue();
+	self:getWardenSetting():setValue(value);
 end
 
 function jailbreak:getMinimumPlayerCountSetting()
