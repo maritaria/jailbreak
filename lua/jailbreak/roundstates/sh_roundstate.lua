@@ -42,10 +42,5 @@ end
 
 function jailbreakState:isWardenAlive()
 	local warden = self:getGamemode():getWarden();
-	print(self:getName() .. ".isWardenAlive()");
-	print("Warden:", warden);
-	print("IsValid(warden)", pcall(IsValid, warden));
-	print("warden:IsPlayer()", pcall(warden.IsPlayer, warden));
-	print("warden:Alive()", pcall(warden.Alive, warden));
 	return IsValid(warden) and warden:IsPlayer() and warden:Alive();
 end
