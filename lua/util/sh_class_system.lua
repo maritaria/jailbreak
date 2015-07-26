@@ -111,18 +111,3 @@ function classes.newInstance(name, ...)
 	end
 	return instance;
 end
-
-
-
---[[--
-function classes.loadDirectory(directory)
-	for _, filename in pairs(love.filesystem.getDirectoryItems(directory)) do
-		if love.filesystem.isFile(directory .. "/" .. filename) then
-			local strippedName = string.match(filename, "(.+)%.lua$");
-			if (#strippedName > 0) then
-				require(directory .. "/" .. strippedName);
-			end
-		end
-	end
-end
---]]--
