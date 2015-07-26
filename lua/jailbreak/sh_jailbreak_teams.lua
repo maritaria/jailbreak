@@ -2,7 +2,6 @@ local jailbreak = newClass("Jailbreak.Gamemode", "Gamemode");
 
 function jailbreak:initTeams()
 	local manager = self:getTeamManager();
-	local teamBalancer = self:getTeamBalancer();
 	
 	local spectators = newInstance("Jailbreak.SpectatorsTeam", 1);
 	manager:addTeam(spectators);

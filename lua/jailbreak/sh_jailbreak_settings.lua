@@ -10,6 +10,8 @@ function jailbreak:initSettings()
 	
 	self:getTeamBalancer():initSettings(manager);
 	self:getStateMachine():initSettings(manager);
+	
+	hook.Run("Jailbreak.initSettings", self);
 end
 
 function jailbreak:getWardenSetting()

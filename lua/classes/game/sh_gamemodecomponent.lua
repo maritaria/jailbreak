@@ -12,3 +12,4 @@ end
 function component:initSettings(manager)
 	
 end
+print("not yet implemented");

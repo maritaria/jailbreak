@@ -2,9 +2,11 @@ local jailbreak = newClass("Jailbreak.Gamemode", "Gamemode");
 
 function jailbreak:ctor()
 	getDefinition("Gamemode").ctor(self);
-	self._stateMachine = newInstance("Jailbreak.RoundStateMachine", self);
 	self._settingsManager = newInstance("SettingsManager");
+	self._stateMachine = newInstance("Jailbreak.RoundStateMachine", self);
 	self._balancer = newInstance("Jailbreak.TeamBalancer", self);
+	self._deathLog = newInstance("Jailbreak.DeathLog", self);
+	self._deathLog:initSettings(self:getSettingsManager());
 	self:initTeams();
 end
 
@@ -32,7 +34,8 @@ function jailbreak:gotoFreeRoam()
 	statemachine:setActiveState(freeroam);
 end
 
-function jailbreak:think()
+function jailbreak:onThink()
+	getDefinition("Gamemode").onThink(self);
 	self:getStateMachine():tick();
 end
 
