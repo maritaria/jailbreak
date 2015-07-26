@@ -1,6 +1,6 @@
 local setting = newClass("Setting", "Base");
 
-function setting:getValue(default)
+function setting:getValue()
 	return self._value;
 end
 

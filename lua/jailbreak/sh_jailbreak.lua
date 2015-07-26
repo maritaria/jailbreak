@@ -5,8 +5,7 @@ function jailbreak:ctor()
 	self._settingsManager = newInstance("SettingsManager");
 	self._stateMachine = newInstance("Jailbreak.RoundStateMachine", self);
 	self._balancer = newInstance("Jailbreak.TeamBalancer", self);
-	self._deathLog = newInstance("Jailbreak.DeathLog", self);
-	self._deathLog:initSettings(self:getSettingsManager());
+	self:initDeathLog();
 	self:initTeams();
 end
 

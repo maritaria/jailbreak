@@ -9,6 +9,12 @@ function balancer:initSettings(manager)
 	self._ratioSetting = newInstance("Setting", manager, "Jailbreak.TeamBalancer.Ratio", 0.35);
 end
 
+function balancer:subscribeEvents()
+end
+
+function balancer:unsubscribeEvents()
+end
+
 function balancer:getGuardRatioSetting()
 	return self._ratioSetting;
 end

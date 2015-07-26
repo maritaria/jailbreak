@@ -11,12 +11,15 @@ function component:getGamemode()
 end
 
 function component:initSettings(manager)
+	error("not yet implemented");
 end
 
 function component:subscribeEvents()
+	error("not yet implemented");
 end
 
 function component:unsubscribeEvents()
+	error("not yet implemented");
 end
 
 print("not yet implemented");

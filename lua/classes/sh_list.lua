@@ -20,7 +20,7 @@ end
 
 function list:insert(item, index)
 	assertType(index, "number");
-	table.insert(self._items, index, item);
+	table.insert(self._items, 1 + index, item);
 	return item;
 end
 
@@ -30,7 +30,7 @@ end
 
 function list:removeAt(index)
 	assertArgument(2, "number");
-	return table.remove(self._items, index);
+	return table.remove(self._items, 1 + index);
 end
 
 function list:indexOf(item)
