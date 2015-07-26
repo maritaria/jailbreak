@@ -32,3 +32,37 @@ function teamManager:getTeamByIdentifier(identifier)
 		end
 	end
 end
+
+function teamManager:subscribeEvents()
+	local gm = self:getGamemode();
+	gm:getPlayerInitialSpawnEvent():subscribe(self, self.onPlayerInitialSpawn);
+	gm:getPlayerSpawnEvent():subscribe(self, self.onPlayerSpawn);
+	gm:getPlayerSelectSpawnEvent():subscribe(self, self.onPlayerSelectSpawn);
+end
+
+function teamManager:unsubscribeEvents()
+	local gm = self:getGamemode();
+	gm:getPlayerInitialSpawnEvent():unsubscribe(self);
+	gm:getPlayerSpawnEvent():unsubscribe(self);
+	gm:getPlayerSelectSpawnEvent():unsubscribe(self);
+end
+
+function teamManager:onPlayerInitialSpawn(ply)
+	print("teamManager:onPlayerInitialSpawn("..tostring(ply)..")");
+	ply:setTeam(self:getDefaultTeam());
+end
+
+function teamManager:onPlayerSpawn(ply)
+	print("teamManager:onPlayerSpawn("..tostring(ply)..")");
+	ply:getTeam():handleSpawn(ply);
+end
+
+function teamManager:onPlayerSelectSpawn(ply)
+	print("teamManager:onPlayerSelectSpawn("..tostring(ply)..")");
+	local team = ply:getTeam();
+	if (team != nil) then
+		return team:selectSpawnPoint(ply);
+	else
+		return game.GetWorld();
+	end
+end

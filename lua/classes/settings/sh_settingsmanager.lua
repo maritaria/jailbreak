@@ -24,11 +24,11 @@ end
 
 function settingsManager:initChannels()
 	self._updateChannel = newInstance("NetworkChannel", "SettingsManager.UpdateChannel");
-	self._updateChannel:getTransmissionReceivedEvent():subscribe("SettingsManager", wrap(self.handleUpdate, self));
+	self._updateChannel:getTransmissionReceivedEvent():subscribe(self, self.handleUpdate);
 	self._requestChannel = newInstance("NetworkChannel", "SettingsManager.RequestChannel");
-	self._requestChannel:getTransmissionReceivedEvent():subscribe("SettingsManager", wrap(self.handleRequest, self));
+	self._requestChannel:getTransmissionReceivedEvent():subscribe(self, self.handleRequest);
 	self._commitChannel = newInstance("NetworkChannel", "SettingsManager.CommitChannel");
-	self._commitChannel:getTransmissionReceivedEvent():subscribe("SettingsManager", wrap(self.handleCommit, self));
+	self._commitChannel:getTransmissionReceivedEvent():subscribe(self, self.handleCommit);
 end
 
 function settingsManager:getUpdateChannel()

@@ -16,7 +16,7 @@ function event:unsubscribe(identifier)
 end
 
 function event:fire(...)
-	for _, callback in pairs(self._listeners) do
-		callback(...);
+	for identifier, callback in pairs(self._listeners) do
+		callback(identifier, ...);
 	end
 end

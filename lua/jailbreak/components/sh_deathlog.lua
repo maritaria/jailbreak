@@ -11,7 +11,7 @@ function deathLog:initSettings(manager)
 end
 
 function deathLog:subscribeGamemodeEvents(gamemode)
-	gamemode:getPlayerDeathEvent():subscribe("deathLog", wrap(self.onPlayerDeath, self));
+	gamemode:getPlayerDeathEvent():subscribe(self, self.onPlayerDeath);
 end
 
 function deathLog:onPlayerDeath(ply)

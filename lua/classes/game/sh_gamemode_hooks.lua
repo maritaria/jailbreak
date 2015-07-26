@@ -1,7 +1,8 @@
 local gamemode = newClass("Gamemode");
 gamemode.__eventFactoryQueue = {};
-
+print("Possible alternative: build hook system into gamemode class :{");
 function gamemode:addGamemodeEvent(name)
+	assert(type(self.__eventFactoryQueue) == "table", "This function can only be called before an instance has been made");
 	local funcName = "on" .. name;
 	local eventName = name .. "Event";
 	
@@ -12,10 +13,9 @@ function gamemode:addGamemodeEvent(name)
 	gamemode[eventGetter] = function(self)
 		return self[eventStorage];
 	end
-	
 	gamemode[funcName] = function(self, ...)
 		local event = gamemode[eventGetter](self);
-		event:fire(self, ...);
+		event:fire(...);
 	end
 end
 
@@ -24,6 +24,7 @@ function gamemode:initEvents()
 		local eventStorage = eventName;
 		self[eventStorage] = newInstance("Event");
 	end
+	self.__eventFactoryQueue = false;
 end
 
 local function redirectHook(hookName)
@@ -54,6 +55,7 @@ if SERVER then
 	redirectHook("PlayerInitialSpawn");
 	redirectHook("PlayerLeaveVehicle");
 	redirectHook("PlayerSay");
+	redirectHook("PlayerSelectSpawn");
 	redirectHook("PlayerSilentDeath");
 	redirectHook("PlayerSpawn");
 	redirectHook("PlayerSpray");
