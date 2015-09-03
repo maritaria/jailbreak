@@ -36,3 +36,8 @@ end
 function play:leave()
 	getDefinition("Jailbreak.RoundState").leave(self);
 end
+
+function play:onPlayerLeave(ply)
+	self:checkPlayerCounts("PlayerLeave");
+	
+end

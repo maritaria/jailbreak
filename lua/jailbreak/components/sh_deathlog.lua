@@ -22,14 +22,15 @@ end
 function deathLog:subscribeEvents()
 	local gm = self:getGamemode();
 	if SERVER then
-		gm:getPlayerDeathEvent():subscribe(self, self.onPlayerDeath);
-		gm:getPlayerSilentDeathEvent():subscribe(self, self.onPlayerDeath);
+		gm:subscribe("PlayerDeath", self, "onPlayerDeath");
+		gm:subscribe("PlayerSilentDeath", self, "onPlayerDeath");
 	end
 end
 
 function deathLog:unsubscribeEvents()
 	local gm = self:getGamemode();
 	if SERVER then
+		gm:unsubscribe(self);
 		gm:getPlayerDeathEvent():unsubscribe(self);
 	end
 end

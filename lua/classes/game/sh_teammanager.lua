@@ -36,18 +36,18 @@ end
 function teamManager:subscribeEvents()
 	local gm = self:getGamemode();
 	if SERVER then
-		gm:getPlayerInitialSpawnEvent():subscribe(self, self.onPlayerInitialSpawn);
-		gm:getPlayerSpawnEvent():subscribe(self, self.onPlayerSpawn);
-		gm:getPlayerSelectSpawnEvent():subscribe(self, self.onPlayerSelectSpawn);
+		gm:subscribe("PlayerInitialSpawn", self, "onPlayerInitialSpawn");
+		gm:subscribe("PlayerSpawn", self, "onPlayerSpawn");
+		gm:subscribe("PlayerSelectSpawn", self, "onPlayerSelectSpawn");
 	end
 end
 
 function teamManager:unsubscribeEvents()
 	local gm = self:getGamemode();
 	if SERVER then
-		gm:getPlayerInitialSpawnEvent():unsubscribe(self);
-		gm:getPlayerSpawnEvent():unsubscribe(self);
-		gm:getPlayerSelectSpawnEvent():unsubscribe(self);
+		gm:unsubscribe("PlayerInitialSpawn", self);
+		gm:unsubscribe("PlayerSpawn", self);
+		gm:unsubscribe("PlayerSelectSpawn", self);
 	end
 end
 

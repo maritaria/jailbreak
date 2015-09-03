@@ -1,5 +1,5 @@
 local component = newClass("GamemodeComponent");
-print("TODO: Refactor the gamemode constructor argument away");
+
 function component:ctor(gamemode)
 	assertArgument(2, "Gamemode");
 	self._gamemode = gamemode;
@@ -22,4 +22,4 @@ function component:unsubscribeEvents()
 	error("not yet implemented");
 end
 
-print("not yet implemented");
+print("TODO: Refactor the gamemode constructor argument away, do this by making the gamemode set-able and call unsub and sub from there instead");

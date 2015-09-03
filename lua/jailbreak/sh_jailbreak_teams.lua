@@ -29,3 +29,11 @@ end
 function jailbreak:getGuardTeam()
 	return self._guardTeam;
 end
+
+function jailbreak:initTeamBalancer()
+	self._balancer = newInstance("Jailbreak.TeamBalancer", self);
+end
+
+function jailbreak:getTeamBalancer()
+	return self._balancer;
+end

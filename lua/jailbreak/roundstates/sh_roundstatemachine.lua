@@ -29,7 +29,7 @@ end
 function roundStateMachine:initSettings(manager)
 	self._activeStateSetting = newInstance("ReadonlySetting", manager, "RoundStateMachine.ActiveState", "FreeRoam");
 	if CLIENT then
-		self._activeStateSetting:getValueUpdatedEvent():subscribe(self, self.onActiveValueUpdated);
+		self._activeStateSetting:getValueUpdatedEvent():subscribe(self, self.onActiveStateUpdated);
 	end
 	if (self:isStarted()) then
 		if SERVER then

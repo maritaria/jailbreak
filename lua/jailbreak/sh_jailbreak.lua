@@ -2,27 +2,21 @@ local jailbreak = newClass("Jailbreak.Gamemode", "Gamemode");
 
 function jailbreak:ctor()
 	getDefinition("Gamemode").ctor(self);
+	self:setName("Jailbreak");
 	self._settingsManager = newInstance("SettingsManager");
-	self._stateMachine = newInstance("Jailbreak.RoundStateMachine", self);
-	self._balancer = newInstance("Jailbreak.TeamBalancer", self);
-	self:initDeathLog();
-	self:initTeams();
+	self:subscribe("Think", self, "onThink");
 end
 
 function jailbreak:getSettingsManager()
 	return self._settingsManager;
 end
 
-function jailbreak:getStateMachine()
-	return self._stateMachine;
-end
-
-function jailbreak:getTeamBalancer()
-	return self._balancer;
-end
-
 function jailbreak:start()
 	print("jailbreak:start()");
+	self:initStateMachine();
+	self:initDeathLog();
+	self:initTeamBalancer();
+	self:initTeams();
 	self:initSettings();
 	self:gotoFreeRoam();
 end
@@ -34,10 +28,10 @@ function jailbreak:gotoFreeRoam()
 end
 
 function jailbreak:onThink()
-	getDefinition("Gamemode").onThink(self);
 	self:getStateMachine():tick();
 end
 
 function jailbreak:stop()
 	print("jailbreak:stop()");
+	self:unsubscribeAll(self);
 end

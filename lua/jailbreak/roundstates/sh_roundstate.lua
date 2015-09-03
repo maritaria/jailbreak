@@ -7,17 +7,6 @@ function jailbreakState:ctor(name, machine)
 	self._gamemode = self:getMachine():getGamemode();
 end
 
-function jailbreakState:enter()
-	print(self:getName() .. ".enter()");
-	self._stateStart = RealTime();
-	getDefinition("State").enter(self);
-end
-
-function jailbreakState:leave()
-	print(self:getName() .. ".leave()");
-	getDefinition("State").leave(self);
-end
-
 function jailbreakState:getGamemode()
 	return self._gamemode;
 end
@@ -43,4 +32,29 @@ end
 function jailbreakState:isWardenAlive()
 	local warden = self:getGamemode():getWarden();
 	return IsValid(warden) and warden:IsPlayer() and warden:Alive();
+end
+
+function jailbreakState:enter()
+	print(self:getName() .. ".enter()");
+	self._stateStart = RealTime();
+	self:subscribeEvents();
+	getDefinition("State").enter(self);
+end
+
+function jailbreakState:leave()
+	print(self:getName() .. ".leave()");
+	self:unsubscribeEvents();
+	getDefinition("State").leave(self);
+end
+
+function jailbreakState:subscribeEvents()
+	--[[--
+	local gm = self:getGamemode();
+	gm:subscribe("MyEventName", self, self.myEventHandlerFunction);
+	--]]--
+end
+
+function jailbreakState:unsubscribeEvents()
+	local gm = self:getGamemode();
+	gm:unsubscribeAll(self);
 end

@@ -4,8 +4,8 @@ function gamemode:ctor()
 	getDefinition("Base").ctor(self);
 	self:initEvents();
 	self:initTeamManager();
-	self:getInitPostEntityEvent():subscribe(self, self.start);
-	self:getShutDownEvent():subscribe(self, self.stop);
+	self:subscribe("InitPostEntity", self, "start");
+	self:subscribe("ShutDown", self, "stop");
 end
 
 function gamemode:initTeamManager()
@@ -28,4 +28,18 @@ function gamemode:start()
 end
 
 function gamemode:stop()
+end
+
+function gamemode:reload()
+	self:stop();
+	self:start();
+end
+
+function gamemode:getName()
+	return self._Name;
+end
+
+function gamemode:setName(value)
+	assertArgument(2, "string");
+	self._Name = value;
 end

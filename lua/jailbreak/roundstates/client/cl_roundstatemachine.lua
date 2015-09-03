@@ -7,7 +7,7 @@ function roundStateMachine:requestState()
 	end
 end
 
-function roundStateMachine:onActiveValueUpdated(setting)
+function roundStateMachine:onActiveStateUpdated(setting)
 	local stateName = setting:getValue();
 	local state = self:getState(stateName);
 	self:setActiveState(state);
